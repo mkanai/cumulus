@@ -22,6 +22,8 @@ workflow souporcell {
         File? common_variants
         # Skip remap step. Only recommended in non denovo mode or common variants are provided
         Boolean skip_remap
+        # Run with --no_umi flag set to True. Used for ATAC seq demultiplexing
+        Boolean no_umi
         # A comma-separated list of donor names for renaming clusters achieved by souporcell
         String donor_rename
         # Only demultiplex cells/nuclei with at least <min_num_genes> expressed genes
@@ -61,6 +63,7 @@ workflow souporcell {
             common_variants = common_variants,
             skip_remap = skip_remap,
             de_novo_mode = de_novo_mode,
+            no_umi = no_umi,
             min_num_genes = min_num_genes,
             num_clusters = num_clusters,
             version = souporcell_version,
@@ -112,6 +115,7 @@ task run_souporcell {
         File? common_variants
         Boolean skip_remap
         Boolean de_novo_mode
+        Boolean no_umi
         Int min_num_genes
         Int num_clusters
 
@@ -143,6 +147,9 @@ task run_souporcell {
         from subprocess import check_call
 
         souporcell_call_args = ['souporcell_pipeline.py', '-i', '~{input_bam}', '-b', 'result/~{sample_id}.barcodes.tsv', '-f', 'genome_ref/fasta/genome.fa', '-t', '~{num_cpu}', '-o', 'result', '-k', '~{num_clusters}']
+
+        if '~{no_umi}' == 'true':
+            souporcell_call_args.extend(['--no_umi', 'True'])
 
         if '~{de_novo_mode}' == 'false':
             assert '~{ref_genotypes}' != '', "Reference mode must have a reference genotype vcf file provided!"
