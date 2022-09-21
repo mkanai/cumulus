@@ -188,6 +188,8 @@ task run_souporcell {
     output {
         File souporcell_cluster_tsv = "result/clusters.tsv"
         File souporcell_genotypes_vcf = "result/cluster_genotypes.vcf"
+        File ref_mtx = "result/ref.mtx"
+        File alt_mtx = "result/alt.mtx"
         File monitoringLog = "monitoring.log"
     }
 
@@ -209,6 +211,8 @@ task match_donors {
         File input_rna
         File souporcell_cluster_tsv
         File souporcell_genotypes_vcf
+        File ref_mtx
+        File alt_mtx
         File? ref_genotypes
         String? donor_rename
 
@@ -222,7 +226,7 @@ task match_donors {
         String backend
     }
 
-    Float file_size = size([input_rna, souporcell_cluster_tsv, souporcell_genotypes_vcf], "GB")
+    Float file_size = size([input_rna, souporcell_cluster_tsv, souporcell_genotypes_vcf, ref_mtx, alt_mtx], "GB")
 
     command {
         set -e
@@ -251,7 +255,7 @@ task match_donors {
         CODE
 
         mkdir result
-        mv match_donors.log "~{sample_id}"_demux.zarr.zip ~{souporcell_cluster_tsv} ~{souporcell_genotypes_vcf} result/
+        mv match_donors.log "~{sample_id}"_demux.zarr.zip ~{souporcell_cluster_tsv} ~{souporcell_genotypes_vcf} ~{ref_mtx} ~{alt_mtx} result/
         strato sync --backend ~{backend} -m result "~{output_directory}/~{sample_id}"
     }
 
