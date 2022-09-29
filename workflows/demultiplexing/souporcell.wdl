@@ -84,6 +84,8 @@ workflow souporcell {
             input_rna = input_rna,
             souporcell_cluster_tsv = run_souporcell.souporcell_cluster_tsv,
             souporcell_genotypes_vcf = run_souporcell.souporcell_genotypes_vcf,
+            ref_mtx = run_souporcell.ref_mtx,
+            alt_mtx = run_souporcell.alt_mtx,
             ref_genotypes = ref_genotypes,
             donor_rename = donor_rename,
             docker_registry = docker_registry,
