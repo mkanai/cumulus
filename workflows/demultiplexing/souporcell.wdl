@@ -190,6 +190,8 @@ task run_souporcell {
     output {
         File souporcell_cluster_tsv = "result/clusters.tsv"
         File souporcell_genotypes_vcf = "result/cluster_genotypes.vcf"
+        File freebayes_vcf = "result/souporcell_merged_sorted_vcf.vcf.gz"
+        File freebayes_vcf_tbi = "result/souporcell_merged_sorted_vcf.vcf.gz.tbi"
         File ref_mtx = "result/ref.mtx"
         File alt_mtx = "result/alt.mtx"
         File monitoringLog = "monitoring.log"
