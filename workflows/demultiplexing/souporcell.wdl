@@ -84,6 +84,8 @@ workflow souporcell {
             input_rna = input_rna,
             souporcell_cluster_tsv = run_souporcell.souporcell_cluster_tsv,
             souporcell_genotypes_vcf = run_souporcell.souporcell_genotypes_vcf,
+            freebayes_vcf = run_souporcell.freebayes_vcf,
+            freebayes_vcf_tbi = run_souporcell.freebayes_vcf_tbi,
             ref_mtx = run_souporcell.ref_mtx,
             alt_mtx = run_souporcell.alt_mtx,
             ref_genotypes = ref_genotypes,
@@ -215,6 +217,8 @@ task match_donors {
         File input_rna
         File souporcell_cluster_tsv
         File souporcell_genotypes_vcf
+        File freebayes_vcf
+        File freebayes_vcf_tbi
         File ref_mtx
         File alt_mtx
         File? ref_genotypes
@@ -230,7 +234,7 @@ task match_donors {
         String backend
     }
 
-    Float file_size = size([input_rna, souporcell_cluster_tsv, souporcell_genotypes_vcf, ref_mtx, alt_mtx], "GB")
+    Float file_size = size([input_rna, souporcell_cluster_tsv, souporcell_genotypes_vcf, freebayes_vcf, freebayes_vcf_tbi, ref_mtx, alt_mtx], "GB")
 
     command {
         set -e
@@ -259,7 +263,7 @@ task match_donors {
         CODE
 
         mkdir result
-        mv match_donors.log "~{sample_id}"_demux.zarr.zip ~{souporcell_cluster_tsv} ~{souporcell_genotypes_vcf} ~{ref_mtx} ~{alt_mtx} result/
+        mv match_donors.log "~{sample_id}"_demux.zarr.zip ~{souporcell_cluster_tsv} ~{souporcell_genotypes_vcf} ~{freebayes_vcf} ~{freebayes_vcf_tbi} ~{ref_mtx} ~{alt_mtx} result/
         strato sync --backend ~{backend} -m result "~{output_directory}/~{sample_id}"
     }
 
