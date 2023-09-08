@@ -187,6 +187,7 @@ task popscle_task {
 
     output {
         String output_folder = "~{output_directory}/~{sample_id}"
+        File output_best = "result/~{sample_id}.best"
         File output_zarr  = "result/~{sample_id}_demux.zarr.zip"
         File monitoringLog = "monitoring.log"
     }
