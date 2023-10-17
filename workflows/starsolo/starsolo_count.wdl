@@ -285,7 +285,7 @@ task run_starsolo {
             args_dict['--outSAMattributes'] = ['BAM', 'Unsorted']
 
         if '~{defined(varVCFfile)}' == 'true':
-            args_dict['--varVCFfile'] = '<(zcat ~{varVCFfile})'
+            args_dict['--varVCFfile'] = '~{varVCFfile}'
             args_dict['--outSAMattributes'] += ['vA', 'vG']
 
         if '~{defined(waspOutputMode)}' == 'true':
