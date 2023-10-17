@@ -289,7 +289,7 @@ task run_starsolo {
             args_dict['--outSAMattributes'] += ['vA', 'vG']
 
         if '~{defined(waspOutputMode)}' == 'true':
-            args_dict['--waspOutputMode'] = 'SAMtag'
+            args_dict['--waspOutputMode'] = '~{waspOutputMode}'
             args_dict['--outSAMattributes'] += ['vW']
 
         if file_ext == '.fastq.gz':
