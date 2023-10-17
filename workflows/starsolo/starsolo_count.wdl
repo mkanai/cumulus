@@ -38,6 +38,8 @@ workflow starsolo_count {
         String? soloOutFormatFeaturesGeneField3
         Float? limitBAMsortRAM
         Int? outBAMsortingBinsN
+        File? varVCFfile
+        String? waspOutputMode
         String docker_registry
         String star_version
         String zones
@@ -90,6 +92,8 @@ workflow starsolo_count {
             soloOutFormatFeaturesGeneField3 = soloOutFormatFeaturesGeneField3,
             limitBAMsortRAM = limitBAMsortRAM,
             outBAMsortingBinsN = outBAMsortingBinsN,
+            varVCFfile = varVCFfile,
+            waspOutputMode = waspOutputMode,
             docker_registry = docker_registry,
             version = star_version,
             zones = zones,
@@ -144,6 +148,8 @@ task run_starsolo {
         String? soloOutFormatFeaturesGeneField3
         Float? limitBAMsortRAM
         Int? outBAMsortingBinsN
+        File? varVCFfile
+        String? waspOutputMode
         String docker_registry
         String version
         String zones
@@ -277,6 +283,14 @@ task run_starsolo {
             barcode_read = 'read1'
         else:
             args_dict['--outSAMattributes'] = ['BAM', 'Unsorted']
+
+        if '~{defined(varVCFfile)}' == 'true':
+            args_dict['--varVCFfile'] = '<(zcat ~{varVCFfile})'
+            args_dict['--outSAMattributes'] += ['vA', 'vG']
+
+        if '~{defined(waspOutputMode)}' == 'true':
+            args_dict['--waspOutputMode'] = 'SAMtag'
+            args_dict['--outSAMattributes'] += ['vW']
 
         if file_ext == '.fastq.gz':
             args_dict['--readFilesCommand'] = 'zcat'
