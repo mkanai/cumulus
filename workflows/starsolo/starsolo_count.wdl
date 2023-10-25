@@ -291,6 +291,7 @@ task run_starsolo {
         if '~{defined(waspOutputMode)}' == 'true':
             args_dict['--waspOutputMode'] = '~{waspOutputMode}'
             args_dict['--outSAMattributes'] += ['vW']
+            args_dict['--twopassMode'] = 'Basic'
 
         if file_ext == '.fastq.gz':
             args_dict['--readFilesCommand'] = 'zcat'
