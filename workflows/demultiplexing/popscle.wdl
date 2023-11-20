@@ -87,6 +87,7 @@ workflow popscle {
 
     output {
         String output_folder = popscle_task.output_folder
+        File output_best = popscle_task.output_best
         File output_zarr = popscle_task.output_zarr
         File monitoringLog = popscle_task.monitoringLog
     }
